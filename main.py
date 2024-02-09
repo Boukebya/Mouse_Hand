@@ -3,6 +3,18 @@ import mediapipe as mp
 import mouse
 import numpy as np
 
+#model path
+model_path = 'gesture_recognizer.task'
+
+BaseOptions = mp.tasks.BaseOptions
+GestureRecognizer = mp.tasks.vision.GestureRecognizer
+GestureRecognizerOptions = mp.tasks.vision.GestureRecognizerOptions
+VisionRunningMode = mp.tasks.vision.RunningMode
+
+options = GestureRecognizerOptions(
+    base_options=BaseOptions(model_asset_path='gesture_recognizer.task'),
+    running_mode=VisionRunningMode.IMAGE)
+
 # Obtenir les dimensions de l'écran
 screen_width, screen_height = 1920, 1080
 
@@ -38,12 +50,16 @@ while True:
     # Process the frame with MediaPipe Hands
     results = hands.process(rgb_frame)
 
+
+
+
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
+
             # Use drawing utils to draw connections
             mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
-            # Access the index finger mcp (metacarpophalangeal) joint (landmark 5)
+            # Access the index 5
             index_fingertip = hand_landmarks.landmark[5]
 
             # Convert the normalized position to pixel coordinates
@@ -61,11 +77,11 @@ while True:
             # Move the mouse to the mapped position
             mouse.move(screen_x, screen_y)
 
-            # Draw a bigger circle at the index fingertip
+            # Draw a circle at the index fingertip for visual feedback
             cv2.circle(frame, (x, y), 10, (0, 255, 0), -1)
 
     # Show the frame
-    cv2.imshow('frame', frame)
+    cv2.imshow('Hand Tracking', frame)
 
     # Break loop with 'q' key
     if cv2.waitKey(1) & 0xFF == ord('q'):

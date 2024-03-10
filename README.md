@@ -9,5 +9,11 @@ We train the model to recognize three hand gestures by creating a dataset of the
 
 
 Mouse movement : move your hand in front of the webcam.
+
+
 Left click : index to thumb.
+
+
 Right click : middle finger to thumb.
+
+
